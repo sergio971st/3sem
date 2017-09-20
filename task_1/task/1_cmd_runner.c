@@ -32,19 +32,23 @@ int main(int argc, char *argv[])
 	       	waitpid(pid, &status, 0);
 		printf("Ret code:%d\n", WEXITSTATUS(status));
 	} else {
-		switch (argc) {
-			case 1:
-				printf ("You didn't write any program name\n");
-			case 2:
-				execl(argv[1], argv[1], NULL);
-			case 3:
-				execl(argv[1], argv[2], NULL);
-			case 4:
-				execl(argv[1], argv[2], argv[3], NULL);
-			case 5: execl(argv[1], argv[2], argv[3], argv[4], NULL);
-			default:
-				printf("There are too many arguments!\n");
+		char **a = calloc(sizeof(char *),100);
+		a[0] = NULL;
+		char *path = argv[1];
+		if (argc == 1) {
+			printf ("There is no path!");
+			exit(0);
 		}
+		if (argc == 2) {
+			execv(path,a);
+		} else {
+		for (int i = 2; i < argc; i++) {
+			a[i-2] = argv[i];
+		}
+		a[argc] = NULL;
+		execv(path, a);
+		}
+
 	}
 	return 0;
 }
