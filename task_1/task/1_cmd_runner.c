@@ -17,10 +17,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-
-/*Path, name and arguments of program that you want to execute can be provided by writing it as arguments of cmd.*/
-
-
 int main(int argc, char *argv[])
 {
 	pid_t pid = fork();
@@ -32,23 +28,28 @@ int main(int argc, char *argv[])
 	       	waitpid(pid, &status, 0);
 		printf("Ret code:%d\n", WEXITSTATUS(status));
 	} else {
-		char **a = calloc(sizeof(char *),100);
-		a[0] = NULL;
-		char *path = argv[1];
-		if (argc == 1) {
-			printf ("There is no path!");
-			exit(0);
+		char *full = calloc(sizeof(char), 100);
+		printf("Enter the path, the name and the arguments: ");
+		gets(full);
+		int arg = 1;
+		for (int i = 0; i < 100; i++) {
+			if (full[i] == ' ')
+			arg++;
 		}
-		if (argc == 2) {
-			execv(path,a);
-		} else {
-		for (int i = 2; i < argc; i++) {
-			a[i-2] = argv[i];
+		char **parsed = calloc(sizeof(char *), arg);
+		int j = 0;
+		for (int i = 0; i < 100; i++) {
+			if (full[i] == ' ') {
+				parsed[j] = full + i + 1;
+				j++;
+			}
 		}
-		a[argc] = NULL;
-		execv(path, a);
+		for (int i = 0; i < 100; i++) {
+			if (full[i] == ' ')
+			full[i] = '\0';
 		}
-
-	}
-	return 0;
+		parsed[j] = NULL;
+		execv(full,parsed);
+	  return 0;
+    }
 }
