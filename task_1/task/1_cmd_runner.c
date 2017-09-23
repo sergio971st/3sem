@@ -28,23 +28,23 @@ int main(int argc, char *argv[])
 	       	waitpid(pid, &status, 0);
 		printf("Ret code:%d\n", WEXITSTATUS(status));
 	} else {
-		char *full = calloc(sizeof(char), 100);
+		char *full = calloc(sizeof(char), 2100000);
 		printf("Enter the path, the name and the arguments: ");
 		gets(full);
 		int arg = 1;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 2100000; i++) {
 			if (full[i] == ' ')
 			arg++;
 		}
 		char **parsed = calloc(sizeof(char *), arg);
 		int j = 0;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 2100000; i++) {
 			if (full[i] == ' ') {
 				parsed[j] = full + i + 1;
 				j++;
 			}
 		}
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 2100000; i++) {
 			if (full[i] == ' ')
 			full[i] = '\0';
 		}
